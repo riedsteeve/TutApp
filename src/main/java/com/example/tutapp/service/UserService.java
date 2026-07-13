@@ -3,6 +3,8 @@ package com.example.tutapp.service;
 import com.example.tutapp.model.User;
 import com.example.tutapp.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import com.example.tutapp.DTO.userDTO;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Service
 public class UserService {
@@ -12,13 +14,44 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void creerUtilisateur(User user) {
+    public userDTO.ResponseUser createUser(userDTO.CreateUser createUser) {
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
         try {
-            user.setId(null); // Force la génération d'un nouvel ID par JPA
-            User savedUser = userRepository.save(user);
-            System.out.println("Success: Utilisateur sauvegardé avec ID: " + savedUser.getId());
-        } catch (Exception e) {
-            System.err.println("Erreur de connexion base de données: " + e.getMessage());
+            User utilisateur = new User();
+            utilisateur.setNom(createUser.nom());
+            utilisateur.setPrenom(createUser.prenom());
+            utilisateur.setEmail(createUser.email());
+
+            String hashedPassword = passwordEncoder.encode(createUser.mdp());
+
+            utilisateur.setMdp(hashedPassword);
+            utilisateur.setUsername(createUser.username());
+
+            User pushUser = userRepository.save(utilisateur);
+            System.out.println("Succes: Utililisateur créé" + pushUser.getId());
+
+            return new userDTO.ResponseUser(
+                    pushUser.getNom(),
+                    pushUser.getPrenom(),
+                    pushUser.getEmail(),
+                    pushUser.getUsername()
+            );
+        }
+        catch (Exception ex){
+            System.out.println("Erreur: UserService");
+            throw ex;
         }
     }
+
+
+
+
+
+
+
+
+
+
 }
