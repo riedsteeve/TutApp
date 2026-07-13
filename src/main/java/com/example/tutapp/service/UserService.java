@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import com.example.tutapp.DTO.userDTO;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.time.OffsetDateTime;
+
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -28,6 +30,7 @@ public class UserService {
 
             utilisateur.setMdp(hashedPassword);
             utilisateur.setUsername(createUser.username());
+            utilisateur.setCreated_At(OffsetDateTime.now());
 
             User pushUser = userRepository.save(utilisateur);
             System.out.println("Succes: Utililisateur créé" + pushUser.getId());
