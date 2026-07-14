@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.tutapp.DTO.userDTO;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -21,5 +23,16 @@ public class UserController {
     public ResponseEntity<userDTO.ResponseUser> create(@RequestBody userDTO.CreateUser user) {
         userDTO.ResponseUser response = userService.createUser(user);
         return new  ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> deleteUser(@RequestParam("id") String id) {
+        boolean estSupprime = userService.DeleteUser(id);
+
+        if(!estSupprime){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Suppression impossible: Utilisateur non trouvé");
+        }
+
+        return ResponseEntity.ok("Ustilisateur supprimé avec succès");
     }
 }

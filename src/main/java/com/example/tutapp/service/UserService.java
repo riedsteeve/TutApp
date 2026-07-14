@@ -49,6 +49,24 @@ public class UserService {
     }
 
 
+    public boolean DeleteUser(String id) {
+        //On vérifie si le User existe d'abord
+        var ExisteUser = userRepository.findById(id);
+
+        if(ExisteUser.isEmpty()) {
+            return false;
+        }
+
+        User utilisateur = ExisteUser.get();
+
+        utilisateur.setDeleted(true);
+        userRepository.save(utilisateur);
+        System.out.println("Succes: Utilisateur supprimé avec succes");
+
+        return true;
+    }
+
+
 
 
 
