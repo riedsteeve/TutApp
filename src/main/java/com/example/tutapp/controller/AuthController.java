@@ -20,10 +20,12 @@ import java.util.Map;
 public class AuthController {
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    public AuthController(JwtUtil jwtUtil, UserRepository userRepository) {
+    public AuthController(JwtUtil jwtUtil, UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.jwtUtil = jwtUtil;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -40,7 +42,6 @@ public class AuthController {
         var utilisateur = UserExiste.get();
 
         //On vérifie son mdp avec Bcrypt
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         if(!passwordEncoder.matches(request.getPassword(), utilisateur.getMdp())){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email ou mot de passe incorrecte");
         }

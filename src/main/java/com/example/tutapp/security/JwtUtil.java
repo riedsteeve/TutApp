@@ -14,9 +14,6 @@ public class JwtUtil {
     @Value("${jwt.secret}")
     private String SECRET_KEY;
 
-    @Value("{EXPRIRATION_TOKEN_TIME}")
-    private String EXPRIRATION_TOKEN_TIME;
-
 
     public String generateToken(String username) {
         return Jwts.builder()

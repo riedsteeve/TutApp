@@ -3,6 +3,7 @@ package com.example.tutapp.controller;
 import com.example.tutapp.model.User;
 import com.example.tutapp.service.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.tutapp.DTO.userDTO;
@@ -25,7 +26,19 @@ public class UserController {
         return new  ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @DeleteMapping
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUser(@RequestParam("id") String id, @RequestBody userDTO.CreateUser updateUser){
+        try{
+        userDTO.ResponseUser response = userService.updateUser(id, updateUser);
+
+        return ResponseEntity.ok(response);
+        }
+        catch(RuntimeException ex){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@RequestParam("id") String id) {
         boolean estSupprime = userService.DeleteUser(id);
 

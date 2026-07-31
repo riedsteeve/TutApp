@@ -11,14 +11,14 @@ import java.time.OffsetDateTime;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public userDTO.ResponseUser createUser(userDTO.CreateUser createUser) {
-
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
         try {
             User utilisateur = new User();
@@ -46,6 +46,32 @@ public class UserService {
             System.out.println("Erreur: UserService");
             throw ex;
         }
+    }
+
+    public userDTO.ResponseUser updateUser (String id, userDTO.CreateUser updateUser){
+        //on vérifie l'existence du user
+        User existingUser = userRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé avec l'id : " + id));
+
+        existingUser.setNom(updateUser.nom());
+        existingUser.setPrenom(updateUser.prenom());
+        existingUser.setEmail(updateUser.email());
+        existingUser.setUsername(updateUser.username());
+
+        //On vérifie que le user mette bien quelque chose dedans
+        if (updateUser.mdp() != null && !updateUser.mdp().isBlank()) {
+            existingUser.setMdp(passwordEncoder.encode(updateUser.mdp()));
+        }
+
+        User pushUser = userRepository.save(existingUser);
+        System.out.println("Succès: Utilisateur mis à jour " + pushUser.getId());
+
+        return new userDTO.ResponseUser(
+                pushUser.getNom(),
+                pushUser.getPrenom(),
+                pushUser.getEmail(),
+                pushUser.getUsername()
+        );
     }
 
 
