@@ -7,6 +7,7 @@ import com.example.tutapp.DTO.userDTO;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -16,6 +17,31 @@ public class UserService {
     public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    public List<userDTO.ResponseUser> GetAllUser() {
+        List<User> users = userRepository.findByIsDeletedFalse();
+
+        return users.stream()
+                .map(user -> new userDTO.ResponseUser(
+                    user.getNom(),
+                    user.getPrenom(),
+                    user.getEmail(),
+                    user.getUsername()
+                ))
+                .toList();
+    }
+
+    public userDTO.ResponseUser getUserById(String id){
+        User userById = userRepository.findByIdAndIsDeletedFalse(id)
+            .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé !"));
+
+        return new userDTO.ResponseUser(
+            userById.getNom(),
+            userById.getPrenom(),
+            userById.getEmail(),
+            userById.getUsername()
+        );
     }
 
     public userDTO.ResponseUser createUser(userDTO.CreateUser createUser) {
@@ -33,7 +59,7 @@ public class UserService {
             utilisateur.setCreated_At(OffsetDateTime.now());
 
             User pushUser = userRepository.save(utilisateur);
-            System.out.println("Succes: Utililisateur créé" + pushUser.getId());
+            System.out.println("Succes: Utililisateur créé " + pushUser.getId());
 
             return new userDTO.ResponseUser(
                     pushUser.getNom(),
