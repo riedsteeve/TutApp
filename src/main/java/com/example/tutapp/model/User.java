@@ -1,11 +1,7 @@
 package com.example.tutapp.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -27,6 +23,9 @@ public class User {
     private String email;
     private String mdp;
     private String username;
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private boolean isDeleted = false;
     private OffsetDateTime created_At;
     private OffsetDateTime updated_At;
 }
+
