@@ -1,6 +1,66 @@
-<nav class="bg-violet-900 w-50 rounded-2xl h-110 text-white shadow-2xl inset-shadow-sm inset-shadow-black-500/50 px-6 py-3 border-2 border-violet-500">
-  <div class="flex items-center justify-between">
-    <img src="images/Logo-appli.png" class="h-10 w-auto" alt="Logo TutAPP">
+<aside class="fixed left-0 top-0 z-50 flex h-screen w-54 flex-col rounded-r-2xl border-r-2 border-violet-500 bg-violet-900 px-3 py-4 text-white shadow-2xl inset-shadow-sm inset-shadow-black-500/50">
+  <a routerLink="/acceuil" class="mb-6 flex cursor-pointer items-center px-2">
+    <img src="images/Logo-appli.png" class="h-7 w-auto" alt="Logo TutAPP">
+  </a>
 
+  <nav class="flex flex-col gap-1">
+    <a
+      routerLink="/acceuil"
+      routerLinkActive="bg-violet-700/70 text-white"
+      class="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-violet-200 transition-colors hover:bg-violet-800/70 hover:text-white"
+    >
+      <span class="material-symbols-outlined text-lg">home</span>
+      <span class="text-sm font-medium">Accueil</span>
+    </a>
+    <a
+      routerLink="/mes-cours"
+      routerLinkActive="bg-violet-700/70 text-white"
+      class="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-violet-200 transition-colors hover:bg-violet-800/70 hover:text-white"
+    >
+      <span class="material-symbols-outlined text-lg">play_lesson</span>
+      <span class="text-sm font-medium">Mes cours</span>
+    </a>
+    <a
+      routerLink="/publier-tuto"
+      routerLinkActive="bg-violet-700/70 text-white"
+      class="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-violet-200 transition-colors hover:bg-violet-800/70 hover:text-white"
+    >
+      <span class="material-symbols-outlined text-lg">add_circle</span>
+      <span class="text-sm font-medium">Publier un tuto</span>
+    </a>
+  </nav>
+
+  <div class="relative mt-auto">
+    <button
+      (click)="toggleUserMenu()"
+      class="flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-violet-800/70"
+    >
+      <span class="flex h-8 w-8 items-center justify-center rounded-full border-2 border-violet-500 bg-violet-800">
+        <span class="material-symbols-outlined text-lg">account_circle</span>
+      </span>
+      <span class="font-medium">Mon compte</span>
+      <span class="material-symbols-outlined ml-auto text-base">expand_more</span>
+    </button>
+
+    @if (userMenuOpen) {
+      <div class="absolute bottom-full left-0 right-0 mb-2 overflow-hidden rounded-xl border border-violet-500 bg-violet-900 text-white shadow-2xl inset-shadow-sm inset-shadow-black-500/50">
+        <a
+          routerLink="/profil"
+          (click)="toggleUserMenu()"
+          class="flex cursor-pointer items-center gap-2 px-4 py-3 text-sm text-violet-200 transition-colors hover:bg-violet-800 hover:text-white"
+        >
+          <span class="material-symbols-outlined text-lg">person</span>
+          Mon profil
+        </a>
+        <a
+          routerLink="/"
+          (click)="toggleUserMenu()"
+          class="flex cursor-pointer items-center gap-2 border-t border-violet-700 px-4 py-3 text-sm text-red-400 transition-colors hover:bg-violet-800 hover:text-red-300"
+        >
+          <span class="material-symbols-outlined text-lg">logout</span>
+          Déconnexion
+        </a>
+      </div>
+    }
   </div>
-</nav>
+</aside>

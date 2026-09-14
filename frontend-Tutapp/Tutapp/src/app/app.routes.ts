@@ -5,6 +5,9 @@ import { UserConnexion } from './user-connexion/user-connexion';
 import { Acceuil } from './acceuil/acceuil';
 import { LayoutPostConn } from './layout-post-conn/layout-post-conn';
 import { NavPostConn } from './nav-post-conn/nav-post-conn';
+import { MesCours } from './mes-cours/mes-cours';
+import { PublierTuto } from './publier-tuto/publier-tuto';
+import { UserProfil } from './user-profil/user-profil';
 
 export const routes: Routes = [
   {
@@ -26,6 +29,18 @@ export const routes: Routes = [
       {
         path: 'acceuil',
         component: Acceuil
+      },
+      {
+        path: 'mes-cours',
+        component: MesCours
+      },
+      {
+        path: 'publier-tuto',
+        component: PublierTuto
+      },
+      {
+        path: 'profil',
+        component: UserProfil
       }
   ]
   }
